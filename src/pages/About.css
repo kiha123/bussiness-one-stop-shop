@@ -1,0 +1,143 @@
+.about-overview {
+  max-width: 800px;
+}
+
+.about-overview p {
+  color: var(--clr-text-muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Mission & Vision */
+.mv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.mv-card {
+  background: var(--clr-card);
+  border-radius: 16px;
+  padding: 2.25rem;
+  border: 1px solid var(--clr-border);
+  transition: border-color 0.25s;
+}
+
+.mv-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.mv-icon {
+  color: var(--clr-accent-light);
+  margin-bottom: 1rem;
+}
+
+.mv-card h3 {
+  font-size: 1.15rem;
+  margin: 0 0 0.6rem;
+  color: var(--clr-heading);
+}
+
+.mv-card p {
+  color: var(--clr-text-muted);
+  line-height: 1.7;
+  margin: 0;
+  font-size: 0.925rem;
+}
+
+/* Benefits */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 700px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--clr-text);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--clr-border);
+  background: var(--clr-card);
+  transition: border-color 0.2s;
+}
+
+.benefit-item:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.benefit-check {
+  color: var(--clr-accent-light);
+  flex-shrink: 0;
+}
+
+/* Office */
+.office-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.office-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.office-list li {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--clr-text-muted);
+  line-height: 1.5;
+}
+
+.office-list li svg {
+  color: var(--clr-accent-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.office-list li strong {
+  color: var(--clr-heading);
+}
+
+.map-placeholder {
+  background: var(--clr-dark-3);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--clr-text-muted);
+}
+
+.map-placeholder p {
+  margin: 0.5rem 0 0.15rem;
+  font-weight: 600;
+  color: var(--clr-heading);
+}
+
+.map-placeholder span {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+}
+
+@media (max-width: 768px) {
+  .mv-grid,
+  .benefits-grid,
+  .office-grid {
+    grid-template-columns: 1fr;
+  }
+}

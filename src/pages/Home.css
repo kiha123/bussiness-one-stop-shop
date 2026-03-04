@@ -1,0 +1,471 @@
+/* ============ Hero ============ */
+.hero {
+  background: var(--clr-dark);
+  color: #fff;
+  padding: 7rem 1.5rem 5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-tags {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.hero-tags span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--clr-text-muted);
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--clr-border);
+  border-radius: 50px;
+}
+
+.hero h1 {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 1.5rem;
+  color: #fff;
+}
+
+.hero-accent {
+  color: var(--clr-accent-light);
+}
+
+.text-accent {
+  color: var(--clr-accent-light);
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--clr-text-muted);
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============ Stats ============ */
+.stats {
+  margin-top: 150px;
+  position: relative;
+  z-index: 2;
+  padding: 0 1.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: var(--clr-dark-2);
+  border: 1px solid var(--clr-border);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  transition: border-color 0.25s;
+}
+
+.stat-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.stat-icon {
+  color: var(--clr-accent-light);
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+}
+
+/* ============ About Snippet (Interlace "Who We Are") ============ */
+.about-snippet {
+  max-width: 1000px;
+}
+
+.about-snippet-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.about-snippet-content h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--clr-heading);
+}
+
+.about-snippet-text p {
+  color: var(--clr-text-muted);
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+/* ============ Services ============ */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  transition: all 0.25s ease;
+}
+
+.service-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--clr-card-hover);
+  transform: translateY(-2px);
+}
+
+.service-icon {
+  color: var(--clr-accent-light);
+  margin-bottom: 1rem;
+}
+
+.service-card h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.5rem;
+  color: var(--clr-heading);
+}
+
+.service-card p {
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin: 0 0 1.25rem;
+}
+
+.service-link {
+  font-size: 0.875rem;
+  color: var(--clr-accent-light);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s;
+}
+
+.service-link:hover {
+  color: #fff;
+}
+
+/* ============ Why Us ============ */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.why-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.why-icon {
+  color: var(--clr-accent-light);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.why-card h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+  color: var(--clr-heading);
+}
+
+.why-card p {
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* ============ Announcements ============ */
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-header-row .section-title,
+.section-header-row .section-subtitle {
+  text-align: left;
+}
+
+.announcements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.announcement-card {
+  background: var(--clr-card);
+  border-radius: 16px;
+  padding: 1.75rem;
+  border: 1px solid var(--clr-border);
+  transition: border-color 0.25s;
+}
+
+.announcement-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.announcement-date {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.announcement-card h3 {
+  font-size: 1rem;
+  margin: 0.5rem 0 0.5rem;
+  color: var(--clr-heading);
+}
+
+.announcement-card p {
+  font-size: 0.875rem;
+  color: var(--clr-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============ Steps / Process Flow ============ */
+.steps-flow {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  align-items: start;
+  position: relative;
+}
+
+.step-flow-item {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.step-flow-card {
+  position: relative;
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: 16px;
+  padding: 2rem 1.25rem 1.75rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.step-flow-card:hover {
+  border-color: var(--clr-accent-light);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(34, 197, 94, 0.08);
+}
+
+.step-flow-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: var(--clr-accent-light);
+  border-radius: 16px;
+  margin: 0 auto 0.75rem;
+}
+
+.step-flow-num {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--clr-accent-light);
+  margin-bottom: 0.5rem;
+}
+
+.step-flow-card h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+  color: var(--clr-heading);
+  font-weight: 600;
+}
+
+.step-flow-card p {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.step-flow-connector {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-accent-light);
+  opacity: 0.5;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+/* ============ CTA ============ */
+.cta {
+  background: var(--clr-dark-2);
+  padding: 5rem 1.5rem;
+  text-align: center;
+  border-top: 1px solid var(--clr-border);
+}
+
+.cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cta-inner h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+}
+
+.cta-inner p {
+  color: var(--clr-text-muted);
+  font-size: 1rem;
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 1100px) {
+  .steps-flow {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .step-flow-connector {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .steps-flow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-snippet-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero {
+    padding: 5rem 1.25rem 3.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps-flow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .cta-inner h2 {
+    font-size: 1.75rem;
+  }
+}
