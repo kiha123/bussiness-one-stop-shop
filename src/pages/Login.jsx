@@ -1,43 +1,76 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { LogIn, Mail, Lock, Eye, EyeOff, AlertCircle, Building2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { LogIn, Mail, Lock, Eye, EyeOff, AlertCircle, Building2, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-toastify';
 import './Login.css';
 
 export default function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [isLogin, setIsLogin] = useState(true);
+  const [form, setForm] = useState({ email: '', password: '', confirmPassword: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  
+  const navigate = useNavigate();
+  const { login, register, user, isAuthenticated } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      navigate('/');
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     if (error) setError('');
   };
 
-  const navigate = useNavigate ? useNavigate() : null;
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const validateForm = () => {
     if (!form.email || !form.password) {
       setError('Please fill in all fields.');
-      return;
+      return false;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setError('Please enter a valid email address.');
+      return false;
+    }
+    if (form.password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return false;
+    }
+    if (!isLogin && form.password !== form.confirmPassword) {
+      setError('Passwords do not match.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
     setLoading(true);
-    // Simple demo authentication
-    setTimeout(() => {
-      setLoading(false);
-      // Replace with your real authentication logic
-      if (
-        form.email === 'admin@example.com' &&
-        form.password === 'Admin'
-      ) {
-        setError('');
-        if (navigate) navigate('/');
+    try {
+      if (isLogin) {
+        await login(form.email, form.password);
+        toast.success('Login successful!');
+        navigate('/');
       } else {
-        setError('Invalid email or password. Please try again.');
+        await register(form.email, form.password);
+        toast.success('Registration successful! Check your email to verify.');
+        setIsLogin(true);
+        setForm({ email: '', password: '', confirmPassword: '' });
       }
-    }, 1000);
+    } catch (err) {
+      setError(err.message || 'An error occurred. Please try again.');
+      toast.error(err.message || 'An error occurred.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,8 +80,36 @@ export default function Login() {
           <div className="login-icon">
             <Building2 size={28} />
           </div>
-          <h1>Welcome Back</h1>
-          <p>Sign in to your eBOSS account to manage your business permits.</p>
+          <h1>{isLogin ? 'Welcome Back' : 'Create Account'}</h1>
+          <p>
+            {isLogin
+              ? 'Sign in to your eBOSS account to manage your business permits.'
+              : 'Register for an account to start your business application.'}
+          </p>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="auth-tabs">
+          <button
+            className={`auth-tab ${isLogin ? 'active' : ''}`}
+            onClick={() => {
+              setIsLogin(true);
+              setForm({ email: '', password: '', confirmPassword: '' });
+              setError('');
+            }}
+          >
+            Sign In
+          </button>
+          <button
+            className={`auth-tab ${!isLogin ? 'active' : ''}`}
+            onClick={() => {
+              setIsLogin(false);
+              setForm({ email: '', password: '', confirmPassword: '' });
+              setError('');
+            }}
+          >
+            Register
+          </button>
         </div>
 
         {error && (
@@ -87,7 +148,7 @@ export default function Login() {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                autoComplete="current-password"
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
                 required
               />
               <button
@@ -101,31 +162,72 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="login-options">
-            <label className="remember-me">
-              <input type="checkbox" />
-              Remember me
-            </label>
-            <Link to="/contact" className="forgot-link">
-              Forgot password?
-            </Link>
-          </div>
+          {!isLogin && (
+            <div className="login-field">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className="login-input-wrapper">
+                <Lock size={18} />
+                <input
+                  type={showConfirm ? 'text' : 'password'}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm your password"
+                  autoComplete="new-password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {isLogin && (
+            <div className="login-options">
+              <Link to="/contact" className="forgot-link">
+                Forgot password?
+              </Link>
+            </div>
+          )}
 
           <button type="submit" className="login-submit" disabled={loading}>
-            {loading ? 'Signing in…' : <>Sign In <LogIn size={18} /></>}
+            {loading ? (
+              isLogin ? 'Signing in…' : 'Creating account…'
+            ) : (
+              <>
+                {isLogin ? (
+                  <>
+                    Sign In <LogIn size={18} />
+                  </>
+                ) : (
+                  <>
+                    Create Account <LogIn size={18} />
+                  </>
+                )}
+              </>
+            )}
           </button>
         </form>
 
-        <div className="login-divider">
-          <span>New to eBOSS?</span>
-        </div>
-
-        <div className="login-footer">
-          <p>
-            Don&apos;t have an account?{' '}
-            <Link to="/contact">Contact the BOSS Office</Link> to get started.
-          </p>
-        </div>
+        {isLogin && (
+          <>
+            <div className="login-divider">
+              <span>Need help?</span>
+            </div>
+            <div className="login-footer">
+              <p>
+                Contact the <Link to="/contact">BOSS Office</Link> for assistance.
+              </p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

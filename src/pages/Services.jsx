@@ -15,42 +15,42 @@ const services = [
     icon: <ClipboardList size={36} />,
     title: 'Start Application',
     desc: 'Start your business in San Carlos City. Register online and submit your requirements through our digital platform for faster processing.',
-    link: '/new-business',
+    link: '/services/new-registration',
     action: 'Start Application'
   },
   {
     icon: <FileCheck size={36} />,
-    title: 'Renew Now',
-    desc: 'Renew your existing business permit online. Avoid long lines and complete most steps from the comfort of your home or office.',
-    link: '/renewal',
-    action: 'Renew Now'
+    title: 'Retire Business',
+    desc: 'Close or retire your existing business permit. Process your retirement application online and complete the necessary steps without visiting the office.',
+    link: '/services/retirement',
+    action: 'Retire Now'
   },
   {
     icon: <ShieldCheck size={36} />,
     title: 'Verify Permit',
     desc: 'Verify the status and validity of a business permit. Useful for compliance checks, partnership due diligence, and public inquiries.',
-    link: '/verification',
+    link: '/services/verification',
     action: 'Verify Permit'
   },
   {
     icon: <Search size={36} />,
     title: 'Track Application',
     desc: 'Track your application in real-time. Get updates on where your application is in the process and what actions are needed.',
-    link: '/tracking',
+    link: '/services/tracking',
     action: 'Track Application'
   },
   {
     icon: <Calculator size={36} />,
     title: 'Computes Fee',
     desc: 'Estimate your business permit and registration fees before submitting your application. No hidden charges, fully transparent.',
-    link: '/fee-computation',
+    link: '/services/fee-computation',
     action: 'Compute Fees'
   },
   {
     icon: <CalendarClock size={36} />,
     title: 'Book Appointment',
     desc: 'Schedule an appointment with the BOSS office for document submission, assessment, or consultation. Skip the wait.',
-    link: '/appointment',
+    link: '/services/appointment',
     action: 'Book Appointment'
   },
 ];

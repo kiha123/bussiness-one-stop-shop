@@ -6,19 +6,20 @@
 }
 
 :root {
-  /* ── Interlace-inspired palette ── */
-  --clr-dark: #0c0c1d;
-  --clr-dark-2: #111128;
-  --clr-dark-3: #1a1a35;
-  --clr-accent: #1a5632;
-  --clr-accent-light: #22c55e;
+  /* ── Green & White Theme ── */
+  --clr-dark: #ffffff;
+  --clr-dark-2: #f8faf7;
+  --clr-dark-3: #f0f5f1;
+  --clr-accent: #10b981;
+  --clr-accent-dark: #059669;
+  --clr-accent-light: #34d399;
   --clr-white: #ffffff;
-  --clr-text: #cbd5e1;
-  --clr-text-muted: #94a3b8;
-  --clr-heading: #f1f5f9;
-  --clr-border: rgba(255, 255, 255, 0.08);
-  --clr-card: rgba(255, 255, 255, 0.03);
-  --clr-card-hover: rgba(255, 255, 255, 0.06);
+  --clr-text: #1f3a25;
+  --clr-text-muted: #5a6e66;
+  --clr-heading: #0d2818;
+  --clr-border: rgba(16, 185, 129, 0.15);
+  --clr-card: rgba(16, 185, 129, 0.05);
+  --clr-card-hover: rgba(16, 185, 129, 0.1);
 
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
@@ -60,6 +61,8 @@ img {
 
 .main-content {
   flex: 1;
+  width: 100%;
+  padding: 0;
 }
 
 /* ============ Section Label (Interlace-style) ============ */
@@ -122,11 +125,11 @@ img {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
-  color: var(--clr-white);
+  color: var(--clr-heading);
 }
 
 .page-banner p {
-  color: var(--clr-text-muted);
+  color: var(--clr-text);
   font-size: 1.05rem;
   line-height: 1.7;
 }
@@ -148,15 +151,15 @@ img {
 }
 
 .btn-primary {
-  background: var(--clr-white);
-  color: var(--clr-dark);
-  border-color: var(--clr-white);
+  background: var(--clr-accent);
+  color: var(--clr-white);
+  border-color: var(--clr-accent);
 }
 
 .btn-primary:hover {
-  background: transparent;
+  background: var(--clr-accent-dark);
   color: var(--clr-white);
-  border-color: var(--clr-white);
+  border-color: var(--clr-accent-dark);
 }
 
 .btn-outline {
@@ -195,3 +198,166 @@ img {
   border-color: #22754a;
 }
 
+/* ============ Global Animations ============ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+}
+
+/* Apply animations to buttons */
+.btn {
+  animation: slideInUp 0.6s ease-out;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Apply animations to sections */
+.section {
+  animation: slideInUp 0.8s ease-out;
+}
+
+/* Card animations */
+.service-card,
+.stat-card,
+.why-card,
+.sp-card,
+.mv-card,
+.benefit-item,
+.announcement-card {
+  animation: slideInUp 0.6s ease-out both;
+}
+
+.service-card:nth-child(1),
+.stat-card:nth-child(1),
+.why-card:nth-child(1) { animation-delay: 0.1s; }
+
+.service-card:nth-child(2),
+.stat-card:nth-child(2),
+.why-card:nth-child(2) { animation-delay: 0.2s; }
+
+.service-card:nth-child(3),
+.stat-card:nth-child(3),
+.why-card:nth-child(3) { animation-delay: 0.3s; }
+
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Card hover lift effect */
+.service-card:hover,
+.stat-card:hover,
+.why-card:hover,
+.sp-card:hover,
+.mv-card:hover,
+.benefit-item:hover,
+.announcement-card:hover {
+  transform: translateY(-4px);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Link animations */
+a {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+a:hover {
+  transform: translateX(2px);
+}
+
+/* Input focus animations */
+input:focus,
+select:focus,
+textarea:focus {
+  animation: glow 0.3s ease-out;
+}
+
+/* Smooth page transitions */
+.home,
+.app {
+  animation: fadeIn 0.5s ease-out;
+}

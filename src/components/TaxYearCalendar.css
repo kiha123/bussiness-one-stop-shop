@@ -1,0 +1,112 @@
+.tax-year-calendar-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.tax-year-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.tax-year-input {
+  transition: all 0.2s ease;
+}
+
+.tax-year-input:hover {
+  border-color: #999;
+}
+
+.tax-year-calendar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 16px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.nav-btn:hover {
+  color: #333;
+}
+
+.year-range {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+  min-width: 60px;
+  text-align: center;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.year-btn {
+  padding: 10px 8px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.year-btn:hover {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+.year-btn.highlighted {
+  background: #e8f4f8;
+  border-color: #0891b2;
+}
+
+.year-btn.selected {
+  background: #0891b2;
+  color: white;
+  border-color: #0891b2;
+  font-weight: 600;
+}
+
+.year-btn.selected:hover {
+  background: #0570a0;
+  border-color: #0570a0;
+}
+
+.error-msg {
+  display: block;
+  margin-top: 4px;
+  color: #dc2626;
+  font-size: 13px;
+}

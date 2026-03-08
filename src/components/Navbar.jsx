@@ -1,27 +1,42 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, Building2, LogIn } from 'lucide-react';
+import { Menu, X, LogIn, LogOut, User, ChevronDown } from 'lucide-react';
+import logo from '../assets/logo.png';
+import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-toastify';
 import './Navbar.css';
 
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
   { to: '/services', label: 'Services' },
-  { to: '/requirements', label: 'Requirements' },
   { to: '/announcements', label: 'Announcements' },
   { to: '/contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Logged out successfully!');
+      setMenuOpen(false);
+      setDropdownOpen(false);
+    } catch (err) {
+      toast.error('Failed to logout');
+    }
+  };
 
   return (
     <header className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
-          <Building2 size={28} strokeWidth={2} />
+          <img src={logo} alt="eBOSS Logo" className="navbar-logo" />
           <div className="navbar-brand-text">
-            <span className="brand-title">eBOSS</span>
+            <span className="brand-title">Business Permit</span>
             <span className="brand-sub">San Carlos City, Pangasinan</span>
           </div>
         </Link>
@@ -48,15 +63,42 @@ export default function Navbar() {
               {link.label}
             </NavLink>
           ))}
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              `nav-link nav-login ${isActive ? 'active' : ''}`
-            }
-            onClick={() => setMenuOpen(false)}
-          >
-            <LogIn size={16} /> Sign In
-          </NavLink>
+          {isAuthenticated && user ? (
+            <div className="auth-menu">
+              <div className="user-dropdown">
+                <button 
+                  className="user-dropdown-btn"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  <User size={16} />
+                  <span className="user-email">{user.email}</span>
+                  <ChevronDown size={16} className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`} />
+                </button>
+                
+                {dropdownOpen && (
+                  <div className="dropdown-menu">
+                    <button 
+                      className="dropdown-item logout"
+                      onClick={handleLogout}
+                    >
+                      <LogOut size={14} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <NavLink
+              to="/auth"
+              className={({ isActive }) =>
+                `nav-link nav-login ${isActive ? 'active' : ''}`
+              }
+              onClick={() => setMenuOpen(false)}
+            >
+              <LogIn size={16} /> Sign In
+            </NavLink>
+          )}
         </nav>
       </div>
     </header>

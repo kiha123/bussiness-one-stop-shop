@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -127,6 +128,33 @@ const whyUs = [
 ];
 
 export default function Home() {
+  const sectionRefs = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('section-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    sectionRefs.current.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sectionRefs.current.forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, []);
+
+
   return (
     <div className="home">
       {/* Hero */}
@@ -157,7 +185,7 @@ export default function Home() {
       </section>
 
       {/* Stats */}
-      <section className="stats">
+      <section className="stats" ref={(el) => (sectionRefs.current[0] = el)}>
         <div className="section-container stats-grid">
           {stats.map((s) => (
             <div key={s.label} className="stat-card">
@@ -170,7 +198,7 @@ export default function Home() {
       </section>
 
       {/* About Snippet */}
-      <section className="section">
+      <section className="section" ref={(el) => (sectionRefs.current[1] = el)}>
         <div className="section-container about-snippet">
           <span className="section-label">Who We Are</span>
           <div className="about-snippet-content">
@@ -195,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* Services Overview */}
-      <section className="section section-alt">
+      <section className="section section-alt" ref={(el) => (sectionRefs.current[2] = el)}>
         <div className="section-container">
           <span className="section-label" style={{ textAlign: 'center', display: 'block' }}>Services</span>
           <h2 className="section-title">How We Can Help</h2>
@@ -218,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* Why Us */}
-      <section className="section">
+      <section className="section" ref={(el) => (sectionRefs.current[3] = el)}>
         <div className="section-container">
           <span className="section-label" style={{ textAlign: 'center', display: 'block' }}>Why Us</span>
           <h2 className="section-title">What Makes Us Different</h2>
@@ -239,7 +267,7 @@ export default function Home() {
       </section>
 
       {/* Announcements */}
-      <section className="section section-alt">
+      <section className="section section-alt" ref={(el) => (sectionRefs.current[4] = el)}>
         <div className="section-container">
           <div className="section-header-row">
             <div>
@@ -266,7 +294,7 @@ export default function Home() {
       </section>
 
       {/* Steps */}
-      <section className="section">
+      <section className="section" ref={(el) => (sectionRefs.current[5] = el)}>
         <div className="section-container">
           <span className="section-label" style={{ textAlign: 'center', display: 'block' }}>Process</span>
           <h2 className="section-title">How It Works</h2>
@@ -283,9 +311,7 @@ export default function Home() {
                   <p>{s.desc}</p>
                 </div>
                 {i < steps.length - 1 && (
-                  <div className="step-flow-connector">
-                    <ChevronRight size={20} />
-                  </div>
+                  <div className="step-flow-connector"></div>
                 )}
               </div>
             ))}
@@ -294,7 +320,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="cta">
+      <section className="cta" ref={(el) => (sectionRefs.current[6] = el)}>
         <div className="section-container cta-inner">
           <span className="section-label">Let's Connect</span>
           <h2>Have a Business<br />to Register?</h2>
