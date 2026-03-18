@@ -29,3 +29,21 @@ html {
   background: #059669;
 }
 
+/* App Layout */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+.main-content.admin-main {
+  padding: 0;
+  background: transparent;
+}
+

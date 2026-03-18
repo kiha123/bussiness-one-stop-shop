@@ -3,25 +3,24 @@ import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './contexts/AuthContext';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Requirements from './pages/Requirements';
-import Announcements from './pages/Announcements';
-import Contact from './pages/Contact';
-import Login from './pages/Login';
-import NewRegistration from './pages/NewRegistration';
-import Retirement from './pages/Retirement';
-import Tracking from './pages/Tracking';
-import Verification from './pages/Verification';
-import FeeComputation from './pages/FeeComputation';
-import Appointment from './pages/Appointment';
-import BusinessOperation from './pages/BusinessOperation';
-import LineOfBusiness from './pages/LineOfBusiness';
-import Summary from './pages/Summary';
+import { ProtectedRoute, AdminRoute, Navbar, Footer } from './components/shared';
+import Home from './pages/public/Home';
+import About from './pages/public/About';
+import Services from './pages/public/Services';
+import Requirements from './pages/public/Requirements';
+import Announcements from './pages/public/Announcements';
+import Contact from './pages/public/Contact';
+import Login from './pages/auth/Login';
+import NewRegistration from './pages/public/NewRegistration';
+import Retirement from './pages/public/Retirement';
+import Tracking from './pages/public/Tracking';
+import Verification from './pages/public/Verification';
+import FeeComputation from './pages/public/FeeComputation';
+import Appointment from './pages/public/Appointment';
+import BusinessOperation from './pages/public/BusinessOperation';
+import LineOfBusiness from './pages/public/LineOfBusiness';
+import Summary from './pages/public/Summary';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import './App.css';
 
 function ScrollToTop() {
@@ -33,11 +32,14 @@ function ScrollToTop() {
 }
 
 function AppContent() {
+  const { pathname } = useLocation();
+  const isAdminPage = pathname.startsWith('/admin');
+
   return (
     <div className="app-layout">
       <ScrollToTop />
-      <Navbar />
-      <main className="main-content">
+      {!isAdminPage && <Navbar />}
+      <main className={`main-content ${isAdminPage ? 'admin-main' : ''}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -55,9 +57,10 @@ function AppContent() {
           <Route path="/announcements" element={<Announcements />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/auth" element={<Login />} />
+          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
         </Routes>
       </main>
-      <Footer />
+      {!isAdminPage && <Footer />}
       <ToastContainer
         position="bottom-right"
         autoClose={4000}

@@ -151,15 +151,15 @@ img {
 }
 
 .btn-primary {
-  background: var(--clr-accent);
+  background: #22c55e;
   color: var(--clr-white);
-  border-color: var(--clr-accent);
+  border-color: #22c55e;
 }
 
 .btn-primary:hover {
-  background: var(--clr-accent-dark);
+  background: #16a34a;
   color: var(--clr-white);
-  border-color: var(--clr-accent-dark);
+  border-color: #16a34a;
 }
 
 .btn-outline {

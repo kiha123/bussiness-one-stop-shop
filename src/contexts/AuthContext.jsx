@@ -68,14 +68,44 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Get user role based on email
+  const getUserRole = () => {
+    if (!user || !user.email) return null;
+    
+    const email = user.email.toLowerCase();
+    
+    // Explicit test accounts
+    if (email === 'admin@boss.com') return 'Super Admin';
+    if (email === 'staff@bplo.gov.ph') return 'BPLO Staff';
+    if (email === 'treasurer@payment.gov.ph') return 'Treasurer';
+    if (email === 'endorsing@sanitary.gov.ph') return 'Endorsing Office';
+    
+    // Pattern matching for other accounts
+    if (email.includes('admin')) {
+      return 'Super Admin';
+    } else if (email.includes('bplo') || email.includes('staff')) {
+      return 'BPLO Staff';
+    } else if (email.includes('treasurer') || email.includes('payment')) {
+      return 'Treasurer';
+    } else if (email.includes('endorsing') || email.includes('sanitary') || email.includes('fire') || email.includes('building')) {
+      return 'Endorsing Office';
+    }
+    return 'User';
+  };
+
+  const userRole = getUserRole();
+  const isAdmin = user?.email === 'admin@boss.com';
+
   const value = {
     user,
+    userRole,
     isLoading,
     error,
     login,
     register,
     logout,
     isAuthenticated: !!user,
+    isAdmin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

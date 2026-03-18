@@ -23,6 +23,7 @@ The eBOSS (e-Business One-Stop Shop) is a modern Business Permit and Licensing O
 
 All required packages have been installed:
 - `@supabase/supabase-js` - Backend & Auth
+- `@emailjs/browser` - Email sending (e.g. contact form, notifications)
 - `react-toastify` - Notifications
 - `date-fns` - Date utilities
 - `uuid` - ID generation
@@ -145,7 +146,10 @@ For document uploads, create a storage bucket named `business-documents`:
 - `/services/fee-computation` - Calculate Fees (Public)
 
 ### Protected Routes (Requires Login)
-- `/services/new-registration` - New Business Registration
+- `/services/new-registration` - New Business Registration (Step 1)
+- `/BusinessOperation` - Business Operation Details (Step 2)
+- `/LineOfBusiness` - Line of Business (Step 3)
+- `/Summary` - Application Summary (Step 4)
 - `/services/retirement` - Business Retirement
 - `/services/appointment` - Schedule Appointment
 
@@ -163,30 +167,44 @@ For document uploads, create a storage bucket named `business-documents`:
 
 **Files:**
 - `src/contexts/AuthContext.jsx` - Auth state management
-- `src/pages/Login.jsx` - Login/Register UI
+- `src/pages/Login.jsx` - Login/Register UI (`/auth`)
 - `src/components/ProtectedRoute.jsx` - Route protection
 
 ---
 
-### 2. **New Business Registration** (`/services/new-registration`)
-**Features:**
-- Complete registration form
-- Document upload (PDF, DOC, JPG, PNG)
-- Auto-generated tracking code (BIZ-YYYY-XXXXX)
-- Form validation
-- Success confirmation page
+### 2. **New Business Registration** (Multi-step flow)
 
-**Form Fields:**
-- Business Name, Owner Name
-- Address, Contact Number, Email
-- Business Type (7 options)
-- Capitalization Amount
+**Step 1 –** `/services/new-registration`  
+- Type of application, mode of payment (Annual/Semi-Annual/Quarterly), tax year
+- Tax year picker via **TaxYearCalendar** component
+- **SearchExistingBusiness** to find existing businesses
+- Business name, trade name, type of organization (Sole Proprietorship, Partnership, Corporation, Cooperative)
+- Owner details (gender, DTI number, TIN, name, address)
+- Region/Province/City/Barangay selectors
+- Form validation and navigation to Step 2
 
-**Database:** `business_applications` table
+**Step 2 –** `/BusinessOperation`  
+- Business operation details
+- Progress stepper (Registration → Business Operation → Line of Business → Summary)
+- Navigates to Line of Business step
+
+**Step 3 –** `/LineOfBusiness`  
+- Add and manage lines of business
+- List of business lines with add/remove
+- Navigates to Summary step
+
+**Step 4 –** `/Summary`  
+- Review all entered data
+- Final submission and confirmation
+
+**Shared:** Form state is passed between steps (e.g. via `sessionStorage` or navigation state). Document upload, tracking code (BIZ-YYYY-XXXXX), and success flows can be used in the final step.
+
+**Database:** `business_applications` table (on final submit)
 
 ---
 
 ### 3. **Business Retirement** (`/services/retirement`)
+**Page:** `Retirement.jsx`
 **Features:**
 - Retirement form for existing permits
 - Search existing business applications
@@ -241,7 +259,7 @@ For document uploads, create a storage bucket named `business-documents`:
   - Capital Surcharge (2% for caps > 100k)
 - Fee structure by business type
 
-**Business Types & Base Fees:**
+**Business Types & Base Fees:** (code keys in `computeFees()` are lowercase: `retail`, `wholesale`, `services`, `manufacturing`, `food`, `trading`, `professional`)
 | Type | Mayor | Sanitary | Fire |
 |------|-------|----------|------|
 | Retail | ₱3,000 | ₱2,000 | ₱1,500 |
@@ -314,6 +332,10 @@ getProgressSteps(status)
 - **Footer** - Footer with links
 - **ProtectedRoute** - Route protection wrapper
 
+### Registration Flow Components
+- **SearchExistingBusiness** - Look up existing businesses (used in New Registration)
+- **TaxYearCalendar** - Tax year selection (used in New Registration)
+
 ### Form Components
 - Input fields with validation
 - Select dropdowns
@@ -346,10 +368,17 @@ getProgressSteps(status)
 src/
 ├── pages/                          # Page components
 │   ├── Home.jsx
+│   ├── About.jsx
 │   ├── Services.jsx
+│   ├── Requirements.jsx
+│   ├── Announcements.jsx
+│   ├── Contact.jsx
 │   ├── Login.jsx
 │   ├── NewRegistration.jsx
-│   ├── Renewal.jsx
+│   ├── BusinessOperation.jsx      # Step 2 of registration
+│   ├── LineOfBusiness.jsx         # Step 3 of registration
+│   ├── Summary.jsx                # Step 4 of registration
+│   ├── Retirement.jsx
 │   ├── Tracking.jsx
 │   ├── Verification.jsx
 │   ├── FeeComputation.jsx
@@ -359,14 +388,19 @@ src/
 │   ├── Navbar.jsx
 │   ├── Footer.jsx
 │   ├── ProtectedRoute.jsx
+│   ├── SearchExistingBusiness.jsx # Used in NewRegistration
+│   ├── TaxYearCalendar.jsx        # Tax year picker
 │   └── *.css
-├── contexts/                       # Context providers
+├── contexts/
 │   └── AuthContext.jsx
-├── lib/                            # External services
+├── lib/
 │   └── supabase.js
-├── utils/                          # Utility functions
+├── utils/
 │   └── index.js
-├── App.jsx                         # Main app component
+├── assets/
+│   └── react.svg
+├── App.jsx                         # Main app & routes
+├── AppApplication.jsx              # Alternate app entry (if used)
 ├── App.css
 ├── main.jsx                        # Entry point
 └── index.css                       # Global styles
@@ -422,8 +456,9 @@ Public Services (No Auth Required):
   - Calculate fees
          ↓
 Protected Services (Auth Required):
-  - New Registration → Creates business_applications
-  - Renewal → Creates business_renewals
+  - New Registration (multi-step: NewRegistration → BusinessOperation → LineOfBusiness → Summary)
+    → Creates business_applications
+  - Retirement → Creates business_renewals
   - Appointment → Creates appointments
          ↓
 Database Stores Data (Supabase PostgreSQL)
@@ -501,7 +536,6 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 
 ## 🔄 Future Enhancements
 
-1. **Email Notifications** - Send updates to applicants
 2. **SMS Tracking** - Track via SMS
 3. **Payment Integration** - GCash/Maya payments
 4. **Document Management** - More file types
@@ -528,6 +562,6 @@ This project is built for the San Carlos City BOSS Office as a modernization ini
 
 ---
 
-**Last Updated:** March 4, 2026  
+**Last Updated:** March 8, 2026  
 **Version:** 1.0.0  
 **Status:** Production Ready ✅

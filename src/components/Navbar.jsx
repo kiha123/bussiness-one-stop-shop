@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, LogIn, LogOut, User, ChevronDown } from 'lucide-react';
+import { Menu, X, LogIn, LogOut, User, ChevronDown, BarChart3 } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
@@ -17,7 +17,7 @@ const navLinks = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -77,6 +77,19 @@ export default function Navbar() {
                 
                 {dropdownOpen && (
                   <div className="dropdown-menu">
+                    {isAdmin && (
+                      <NavLink
+                        to="/admin/dashboard"
+                        className="dropdown-item admin-link"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          setMenuOpen(false);
+                        }}
+                      >
+                        <BarChart3 size={14} />
+                        <span>Admin Dashboard</span>
+                      </NavLink>
+                    )}
                     <button 
                       className="dropdown-item logout"
                       onClick={handleLogout}
