@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { LogIn, Mail, Lock, Eye, EyeOff, AlertCircle, Building2, LogOut } from 'lucide-react';
+import { LogIn, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import logo from '../../assets/logo.png';
+import { getUserRoleFromEmail } from '../../utils';
 import './Login.css';
+
+const ADMIN_ROLES = ['Super Admin', 'BPLO Staff', 'Treasurer', 'Endorsing Office'];
+
+function resolvePostAuthRoute(role, redirectTarget) {
+  if (redirectTarget) return redirectTarget;
+  if (ADMIN_ROLES.includes(role)) return '/admin/dashboard';
+  return '/';
+}
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,19 +25,16 @@ export default function Login() {
   const [searchParams] = useSearchParams();
   
   const navigate = useNavigate();
-  const { login, register, user, isAuthenticated, userRole } = useAuth();
-  const validAdminRoles = ['Super Admin', 'BPLO Staff', 'Treasurer', 'Endorsing Office'];
+  const { login, register, signInWithGoogle, user, isAuthenticated, userRole } = useAuth();
+  const redirectTarget = searchParams.get('redirectTo');
+  const safeRedirectTarget = redirectTarget && redirectTarget.startsWith('/') ? redirectTarget : null;
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && user) {
-      if (validAdminRoles.includes(userRole)) {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/');
-      }
+      navigate(resolvePostAuthRoute(userRole, safeRedirectTarget), { replace: true });
     }
-  }, [isAuthenticated, user, userRole, navigate]);
+  }, [isAuthenticated, user, userRole, navigate, safeRedirectTarget]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -64,26 +70,7 @@ export default function Login() {
       if (isLogin) {
         await login(form.email, form.password);
         toast.success('Login successful!');
-        // Auto-redirect staff to admin dashboard
-        setTimeout(() => {
-          const email = form.email.toLowerCase();
-          // Determine role from email
-          let userRoleTemp = 'User';
-          if (email === 'admin@boss.com') userRoleTemp = 'Super Admin';
-          else if (email === 'staff@bplo.gov.ph') userRoleTemp = 'BPLO Staff';
-          else if (email === 'treasurer@payment.gov.ph') userRoleTemp = 'Treasurer';
-          else if (email === 'endorsing@sanitary.gov.ph') userRoleTemp = 'Endorsing Office';
-          else if (email.includes('admin')) userRoleTemp = 'Super Admin';
-          else if (email.includes('bplo') || email.includes('staff')) userRoleTemp = 'BPLO Staff';
-          else if (email.includes('treasurer') || email.includes('payment')) userRoleTemp = 'Treasurer';
-          else if (email.includes('endorsing') || email.includes('sanitary') || email.includes('fire') || email.includes('building')) userRoleTemp = 'Endorsing Office';
-          
-          if (validAdminRoles.includes(userRoleTemp)) {
-            navigate('/admin/dashboard');
-          } else {
-            navigate('/');
-          }
-        }, 500);
+        navigate(resolvePostAuthRoute(getUserRoleFromEmail(form.email), safeRedirectTarget), { replace: true });
       } else {
         await register(form.email, form.password);
         toast.success('Registration successful! Check your email to verify.');
@@ -94,6 +81,17 @@ export default function Login() {
       setError(err.message || 'An error occurred. Please try again.');
       toast.error(err.message || 'An error occurred.');
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      await signInWithGoogle(safeRedirectTarget);
+    } catch (err) {
+      setError(err.message || 'Google sign-in failed. Please try again.');
+      toast.error(err.message || 'Google sign-in failed.');
       setLoading(false);
     }
   };
@@ -141,6 +139,7 @@ export default function Login() {
             <div className="auth-tabs">
               <button
                 className={`auth-tab ${isLogin ? 'active' : ''}`}
+                type="button"
                 onClick={() => {
                   setIsLogin(true);
                   setForm({ email: '', password: '', confirmPassword: '' });
@@ -151,6 +150,7 @@ export default function Login() {
               </button>
               <button
                 className={`auth-tab ${!isLogin ? 'active' : ''}`}
+                type="button"
                 onClick={() => {
                   setIsLogin(false);
                   setForm({ email: '', password: '', confirmPassword: '' });
@@ -263,6 +263,31 @@ export default function Login() {
                   </>
                 )}
               </button>
+
+                {isLogin && (
+                  <>
+                    <div className="login-divider oauth-divider">
+                      <span>or continue with</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="login-google"
+                      onClick={handleGoogleLogin}
+                      disabled={loading}
+                    >
+                      <span className="google-mark" aria-hidden="true">
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false">
+                          <path fill="#FFC107" d="M43.61 20.08H42V20H24v8h11.3c-1.65 4.66-6.08 8-11.3 8c-6.63 0-12-5.37-12-12s5.37-12 12-12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.12 6.05 29.32 4 24 4C12.95 4 4 12.95 4 24s8.95 20 20 20s20-8.95 20-20c0-1.34-.14-2.65-.39-3.92z" />
+                          <path fill="#FF3D00" d="M6.31 14.69l6.57 4.82C14.66 15.11 18.96 12 24 12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.12 6.05 29.32 4 24 4c-7.68 0-14.3 4.34-17.69 10.69z" />
+                          <path fill="#4CAF50" d="M24 44c5.21 0 9.93-1.99 13.5-5.23l-6.23-5.27C29.19 35.09 26.72 36 24 36c-5.2 0-9.62-3.32-11.28-7.95l-6.52 5.02C9.55 39.56 16.21 44 24 44z" />
+                          <path fill="#1976D2" d="M43.61 20.08H42V20H24v8h11.3c-.79 2.22-2.21 4.17-4.03 5.5l.01-.01l6.23 5.27C37.07 39.05 44 34 44 24c0-1.34-.14-2.65-.39-3.92z" />
+                        </svg>
+                      </span>
+                      <span className="login-google-label">Sign in with Google</span>
+                    </button>
+                  </>
+                )}
             </form>
 
             {isLogin && (

@@ -297,7 +297,7 @@
 
 .success-card h2 {
   font-size: 1.75rem;
-  color: #fff;
+  color: var(--clr-heading);
   margin: 1rem 0 0.5rem;
 }
 
@@ -396,7 +396,7 @@
 
 .status-info h2 {
   font-size: 1.5rem;
-  color: #fff;
+  color: var(--clr-heading);
   margin: 0 0 0.5rem;
 }
 
@@ -443,7 +443,7 @@
   gap: 1rem;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--clr-border);
 }
 
 .detail-item:last-child {
@@ -610,7 +610,7 @@
 }
 
 .alert h3 {
-  color: #fff;
+  color: var(--clr-heading);
   margin: 0 0 0.25rem;
 }
 
@@ -639,7 +639,7 @@
 
 .result-title h2 {
   font-size: 1.5rem;
-  color: #fff;
+  color: var(--clr-heading);
   margin: 0 0 0.5rem;
 }
 
@@ -711,7 +711,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--clr-border);
 }
 
 .fee-label {
@@ -817,7 +817,7 @@
   justify-content: space-between;
   font-size: 0.85rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--clr-border);
 }
 
 .guideline-item:last-child {

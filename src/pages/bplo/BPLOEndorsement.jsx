@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { BPLOStyles } from "../../modules/bplo/styles";
-import { Endorsements } from "../../modules/bplo/pages";
+import { BPLOStyles } from "../../features/bplo/styles";
+import { Endorsements } from "../../features/bplo/pages.jsx";
 
 const NAV = [
   { key: "endorsements", label: "Endorsement Tracking", icon: "📤", badge: 4, section: "OPERATIONS" },

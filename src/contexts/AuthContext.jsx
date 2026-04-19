@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { getUserRoleFromEmail } from '../utils';
 
 const AuthContext = createContext();
 
@@ -41,6 +42,30 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const signInWithGoogle = async (redirectTo) => {
+    setError(null);
+    try {
+      const callbackUrl = new URL('/auth', window.location.origin);
+
+      if (redirectTo) {
+        callbackUrl.searchParams.set('redirectTo', redirectTo);
+      }
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: callbackUrl.toString(),
+        },
+      });
+
+      if (error) throw error;
+      return data;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const register = async (email, password) => {
     setError(null);
     try {
@@ -71,26 +96,8 @@ export function AuthProvider({ children }) {
   // Get user role based on email
   const getUserRole = () => {
     if (!user || !user.email) return null;
-    
-    const email = user.email.toLowerCase();
-    
-    // Explicit test accounts
-    if (email === 'admin@boss.com') return 'Super Admin';
-    if (email === 'staff@bplo.gov.ph') return 'BPLO Staff';
-    if (email === 'treasurer@payment.gov.ph') return 'Treasurer';
-    if (email === 'endorsing@sanitary.gov.ph') return 'Endorsing Office';
-    
-    // Pattern matching for other accounts
-    if (email.includes('admin')) {
-      return 'Super Admin';
-    } else if (email.includes('bplo') || email.includes('staff')) {
-      return 'BPLO Staff';
-    } else if (email.includes('treasurer') || email.includes('payment')) {
-      return 'Treasurer';
-    } else if (email.includes('endorsing') || email.includes('sanitary') || email.includes('fire') || email.includes('building')) {
-      return 'Endorsing Office';
-    }
-    return 'User';
+
+    return getUserRoleFromEmail(user.email);
   };
 
   const userRole = getUserRole();
@@ -102,6 +109,7 @@ export function AuthProvider({ children }) {
     isLoading,
     error,
     login,
+    signInWithGoogle,
     register,
     logout,
     isAuthenticated: !!user,

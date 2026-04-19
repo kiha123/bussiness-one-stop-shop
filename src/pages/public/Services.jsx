@@ -19,13 +19,6 @@ const services = [
     action: 'Start Application'
   },
   {
-    icon: <FileCheck size={36} />,
-    title: 'Retire Business',
-    desc: 'Close or retire your existing business permit. Process your retirement application online and complete the necessary steps without visiting the office.',
-    link: '/services/retirement',
-    action: 'Retire Now'
-  },
-  {
     icon: <ShieldCheck size={36} />,
     title: 'Verify Permit',
     desc: 'Verify the status and validity of a business permit. Useful for compliance checks, partnership due diligence, and public inquiries.',
@@ -52,6 +45,13 @@ const services = [
     desc: 'Schedule an appointment with the BOSS office for document submission, assessment, or consultation. Skip the wait.',
     link: '/services/appointment',
     action: 'Book Appointment'
+  },
+  {
+    icon: <FileCheck size={36} />,
+    title: 'Retire Business',
+    desc: 'Close or retire your existing business permit. Process your retirement application online and complete the necessary steps without visiting the office.',
+    link: '/services/retirement',
+    action: 'Retire Now'
   },
 ];
 

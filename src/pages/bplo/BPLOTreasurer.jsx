@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { BPLOStyles } from "../../modules/bplo/styles";
-import { Dashboard, PaymentMonitoring, Reports } from "../../modules/bplo/pages";
+import { BPLOStyles } from "../../features/bplo/styles";
+import { Dashboard, PaymentMonitoring, Reports } from "../../features/bplo/pages.jsx";
 
 const NAV = [
   { key: "dashboard", label: "Dashboard", icon: "💼", section: "OVERVIEW" },

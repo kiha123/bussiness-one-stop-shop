@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './contexts/AuthContext';
-import { ProtectedRoute, AdminRoute, Navbar, Footer } from './components/shared';
+import { ProtectedRoute, AdminRoute, Navbar, Footer, RoleBasedAdminRouter } from './components/shared';
 import Home from './pages/public/Home';
 import About from './pages/public/About';
 import Services from './pages/public/Services';
@@ -21,6 +21,7 @@ import BusinessOperation from './pages/public/BusinessOperation';
 import LineOfBusiness from './pages/public/LineOfBusiness';
 import Summary from './pages/public/Summary';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import { BPLOAdmin, BPLOTreasurer, BPLOEndorsement } from './pages/bplo';
 import './App.css';
 
 function ScrollToTop() {
@@ -57,7 +58,10 @@ function AppContent() {
           <Route path="/announcements" element={<Announcements />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/auth" element={<Login />} />
-          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/dashboard" element={<AdminRoute><RoleBasedAdminRouter /></AdminRoute>} />
+          <Route path="/bplo/admin" element={<AdminRoute><BPLOAdmin /></AdminRoute>} />
+          <Route path="/bplo/endorsement" element={<AdminRoute><BPLOEndorsement /></AdminRoute>} />
+          <Route path="/bplo/treasurer" element={<AdminRoute><BPLOTreasurer /></AdminRoute>} />
         </Routes>
       </main>
       {!isAdminPage && <Footer />}

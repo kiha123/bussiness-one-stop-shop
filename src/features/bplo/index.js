@@ -14,4 +14,4 @@ export {
   Reports,
   Announcements,
   PermitVerification,
-} from './pages';
+} from './pages.jsx';

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BPLOStyles } from "../../modules/bplo/styles";
+import { BPLOStyles } from "../../features/bplo/styles";
 import {
   Dashboard,
   Applications,
@@ -10,7 +10,7 @@ import {
   Reports,
   Announcements,
   PermitVerification,
-} from "../../modules/bplo/pages";
+} from "../../features/bplo/pages.jsx";
 
 const NAV = [
   { key: "dashboard", label: "Dashboard", icon: "📊", section: "OVERVIEW" },

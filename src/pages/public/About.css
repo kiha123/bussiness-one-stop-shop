@@ -68,7 +68,7 @@
 }
 
 .benefit-item:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(16, 185, 129, 0.28);
 }
 
 .benefit-check {
@@ -113,7 +113,7 @@
 
 .map-placeholder {
   background: var(--clr-dark-3);
-  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(16, 185, 129, 0.22);
   border-radius: 16px;
   display: flex;
   flex-direction: column;

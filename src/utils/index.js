@@ -1,6 +1,37 @@
 import { v4 as uuidv4 } from 'uuid';
 
 /**
+ * Map an email address to the application's role labels.
+ */
+export function getUserRoleFromEmail(email) {
+  if (!email) return 'User';
+
+  const normalizedEmail = email.toLowerCase();
+
+  if (normalizedEmail === 'admin@boss.com') return 'Super Admin';
+  if (normalizedEmail === 'staff@bplo.gov.ph') return 'BPLO Staff';
+  if (normalizedEmail === 'treasurer@payment.gov.ph') return 'Treasurer';
+  if (normalizedEmail === 'endorsing@sanitary.gov.ph') return 'Endorsing Office';
+
+  if (normalizedEmail.includes('admin')) {
+    return 'Super Admin';
+  } else if (normalizedEmail.includes('bplo') || normalizedEmail.includes('staff')) {
+    return 'BPLO Staff';
+  } else if (normalizedEmail.includes('treasurer') || normalizedEmail.includes('payment')) {
+    return 'Treasurer';
+  } else if (
+    normalizedEmail.includes('endorsing') ||
+    normalizedEmail.includes('sanitary') ||
+    normalizedEmail.includes('fire') ||
+    normalizedEmail.includes('building')
+  ) {
+    return 'Endorsing Office';
+  }
+
+  return 'User';
+}
+
+/**
  * Generates a tracking code in format: BIZ-YYYY-XXXXX
  */
 export function generateBusinessTrackingCode() {

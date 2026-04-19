@@ -23,6 +23,66 @@ const BARANGAYS = {
   'Balanga': ['Pob.', 'Anyataan'],
 };
 
+function FormInput({
+  label,
+  name,
+  type = 'text',
+  placeholder = '',
+  required = false,
+  value,
+  onChange,
+  error,
+}) {
+  return (
+    <div className="form-input-group">
+      <label>
+        {label}
+        {required && <span className="required">*</span>}
+      </label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={error ? 'input-error' : ''}
+      />
+      {error && <span className="error-msg">{error}</span>}
+    </div>
+  );
+}
+
+function FormSelect({
+  label,
+  name,
+  options,
+  required = false,
+  value,
+  onChange,
+  error,
+}) {
+  return (
+    <div className="form-input-group">
+      <label>
+        {label}
+        {required && <span className="required">*</span>}
+      </label>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        className={error ? 'input-error' : ''}
+      >
+        <option value="">Select {label}</option>
+        {options.map(opt => (
+          <option key={opt} value={opt}>{opt}</option>
+        ))}
+      </select>
+      {error && <span className="error-msg">{error}</span>}
+    </div>
+  );
+}
+
 export default function BusinessOperation() {
   const [currentStep, setCurrentStep] = useState(2);
   const [sameAsMainOffice, setSameAsMainOffice] = useState(false);
@@ -170,45 +230,6 @@ export default function BusinessOperation() {
     }
   };
 
-  const FormInput = ({ label, name, type = 'text', placeholder = '', required = false }) => (
-    <div className="form-input-group">
-      <label>
-        {label}
-        {required && <span className="required">*</span>}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={form[name]}
-        onChange={handleChange}
-        placeholder={placeholder}
-        className={errors[name] ? 'input-error' : ''}
-      />
-      {errors[name] && <span className="error-msg">{errors[name]}</span>}
-    </div>
-  );
-
-  const FormSelect = ({ label, name, options, required = false }) => (
-    <div className="form-input-group">
-      <label>
-        {label}
-        {required && <span className="required">*</span>}
-      </label>
-      <select
-        name={name}
-        value={form[name]}
-        onChange={handleChange}
-        className={errors[name] ? 'input-error' : ''}
-      >
-        <option value="">Select {label}</option>
-        {options.map(opt => (
-          <option key={opt} value={opt}>{opt}</option>
-        ))}
-      </select>
-      {errors[name] && <span className="error-msg">{errors[name]}</span>}
-    </div>
-  );
-
   return (
     <div className="bpls-container">
       <SearchExistingBusiness
@@ -340,7 +361,14 @@ export default function BusinessOperation() {
             )}
 
             <h3 style={{ marginTop: '1.5rem' }}>MODE OF PAYMENT</h3>
-            <FormSelect name="modeOfPayment" label="" options={PAYMENT_MODES} />
+            <FormSelect
+              name="modeOfPayment"
+              label=""
+              options={PAYMENT_MODES}
+              value={form.modeOfPayment}
+              onChange={handleChange}
+              error={errors.modeOfPayment}
+            />
 
             <div className="info-alert">
               <AlertCircle size={18} />
@@ -370,22 +398,47 @@ export default function BusinessOperation() {
             {/* Card 1: Business Operation */}
             <div className="info-card">
               <h3>BUSINESS OPERATION</h3>
-              <FormSelect label="Business Activity" name="businessActivity" options={BUSINESS_ACTIVITIES} required />
-              <FormInput label="Business Area (sq.m)" name="businessAreaSqm" type="number" placeholder="0" required />
-              <FormInput label="Total Floor Area" name="totalFloorArea" type="number" placeholder="0" />
+              <FormSelect
+                label="Business Activity"
+                name="businessActivity"
+                options={BUSINESS_ACTIVITIES}
+                required
+                value={form.businessActivity}
+                onChange={handleChange}
+                error={errors.businessActivity}
+              />
+              <FormInput
+                label="Business Area (sq.m)"
+                name="businessAreaSqm"
+                type="number"
+                placeholder="0"
+                required
+                value={form.businessAreaSqm}
+                onChange={handleChange}
+                error={errors.businessAreaSqm}
+              />
+              <FormInput
+                label="Total Floor Area"
+                name="totalFloorArea"
+                type="number"
+                placeholder="0"
+                value={form.totalFloorArea}
+                onChange={handleChange}
+                error={errors.totalFloorArea}
+              />
               
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <FormInput label="Male Employees" name="maleEmployees" type="number" placeholder="0" />
-                <FormInput label="Female Employees" name="femaleEmployees" type="number" placeholder="0" />
+                <FormInput label="Male Employees" name="maleEmployees" type="number" placeholder="0" value={form.maleEmployees} onChange={handleChange} error={errors.maleEmployees} />
+                <FormInput label="Female Employees" name="femaleEmployees" type="number" placeholder="0" value={form.femaleEmployees} onChange={handleChange} error={errors.femaleEmployees} />
               </div>
 
-              <FormInput label="Total No. of Employees Residing within the LGU" name="employeesWithinLgu" type="number" placeholder="0" />
+              <FormInput label="Total No. of Employees Residing within the LGU" name="employeesWithinLgu" type="number" placeholder="0" value={form.employeesWithinLgu} onChange={handleChange} error={errors.employeesWithinLgu} />
 
               <div style={{ marginBottom: '1.25rem' }}>
                 <label style={{ marginBottom: '0.75rem', display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#374151' }}>Number of Delivery Vehicles</label>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                  <FormInput label="Van / Truck" name="vanTruckCount" type="number" placeholder="0" />
-                  <FormInput label="Motorcycle" name="motorcycleCount" type="number" placeholder="0" />
+                  <FormInput label="Van / Truck" name="vanTruckCount" type="number" placeholder="0" value={form.vanTruckCount} onChange={handleChange} error={errors.vanTruckCount} />
+                  <FormInput label="Motorcycle" name="motorcycleCount" type="number" placeholder="0" value={form.motorcycleCount} onChange={handleChange} error={errors.motorcycleCount} />
                 </div>
               </div>
 
@@ -447,26 +500,35 @@ export default function BusinessOperation() {
 
               {!sameAsMainOffice && (
                 <>
-                  <FormSelect label="Region" name="operationRegion" options={REGIONS} required />
+                  <FormSelect label="Region" name="operationRegion" options={REGIONS} required value={form.operationRegion} onChange={handleChange} error={errors.operationRegion} />
                   <FormSelect
                     label="Province"
                     name="operationProvince"
                     options={form.operationRegion ? PROVINCES[form.operationRegion] || [] : []}
                     required
+                    value={form.operationProvince}
+                    onChange={handleChange}
+                    error={errors.operationProvince}
                   />
                   <FormSelect
                     label="City / Municipality"
                     name="operationCity"
                     options={form.operationProvince ? CITIES[form.operationProvince] || [] : []}
                     required
+                    value={form.operationCity}
+                    onChange={handleChange}
+                    error={errors.operationCity}
                   />
                   <FormSelect
                     label="Barangay"
                     name="operationBarangay"
                     options={form.operationCity ? BARANGAYS[form.operationCity] || [] : []}
                     required
+                    value={form.operationBarangay}
+                    onChange={handleChange}
+                    error={errors.operationBarangay}
                   />
-                  <FormInput label="Zip Code" name="operationZipCode" placeholder="Enter zip code" required />
+                  <FormInput label="Zip Code" name="operationZipCode" placeholder="Enter zip code" required value={form.operationZipCode} onChange={handleChange} error={errors.operationZipCode} />
                 </>
               )}
 
@@ -481,14 +543,14 @@ export default function BusinessOperation() {
               )}
 
               <h4 style={{ marginTop: '1.5rem', marginBottom: '1rem', fontSize: '0.95rem', fontWeight: '600', color: '#374151' }}>Additional Details</h4>
-              <FormInput label="House / Bldg. No" name="houseNumber" />
-              <FormInput label="Name of Building" name="buildingName" />
+              <FormInput label="House / Bldg. No" name="houseNumber" value={form.houseNumber} onChange={handleChange} error={errors.houseNumber} />
+              <FormInput label="Name of Building" name="buildingName" value={form.buildingName} onChange={handleChange} error={errors.buildingName} />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <FormInput label="Lot No" name="lotNo" />
-                <FormInput label="Block No" name="blockNo" />
+                <FormInput label="Lot No" name="lotNo" value={form.lotNo} onChange={handleChange} error={errors.lotNo} />
+                <FormInput label="Block No" name="blockNo" value={form.blockNo} onChange={handleChange} error={errors.blockNo} />
               </div>
-              <FormInput label="Street Address" name="street" />
-              <FormInput label="Subdivision" name="subdivision" />
+              <FormInput label="Street Address" name="street" value={form.street} onChange={handleChange} error={errors.street} />
+              <FormInput label="Subdivision" name="subdivision" value={form.subdivision} onChange={handleChange} error={errors.subdivision} />
             </div>
           </div>
 
